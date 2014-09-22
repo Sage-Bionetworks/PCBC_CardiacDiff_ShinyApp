@@ -39,8 +39,8 @@ shinyUI(fluidPage(
                               choices =  geneLists,
                               selected = geneLists[1],
                               multiple=F),
-                  br(),br(),br(),br(),br(),
-                  br(),br(),br(),br(),br(),
+                  br(),br(),br(),br(),
+                  br(),br(),br(),br(),
                   value='precomputed_geneList'
         ) #END Tab Panel 3
       ), #END tabsetPanel
@@ -50,9 +50,20 @@ shinyUI(fluidPage(
       h4('2. Filter samples by:'),
       #1. heatmap annotation labels
       selectInput("selected_timepoints","Time Points", 
-                  choices =  metadata$TimePoint,
+                  choices =  metadata$TimePoint, selected=c('D60','D03'),
                   selectize=T, multiple=T),
-      br(), br()
+      br(), br(),
+      
+      h4('3. Heatmap Settings:'),
+      #distance metric
+      selectInput("clustering_distance","Distance Calculation",
+                  choices=c("correlation", "euclidean", "maximum", "manhattan", "canberra", "binary", "minkowski"),
+                  selectize=T, multiple=F, selected="correlation"),
+      #linkage 
+      selectInput("clustering_method","Clustering Method",
+                  choices=c("ward", "single", "complete", "average", "mcquitty", "median", "centroid"),
+                  selectize=T, multiple=F, selected="complete")
+      
     ),#END sideBarPanel
     
     mainPanel(
@@ -62,11 +73,8 @@ shinyUI(fluidPage(
                  plotOutput("heatmap",height="700px",width="auto",hoverId=NULL),
                  br(),
                  br(),
-                 h5('summary'),
-                 #tableOutput("mRNA_summary"),
-                 #br(),
-                 #h5('compute time'),
-                 verbatimTextOutput("test")
+                 h4('Summary'),
+                 tableOutput("summary")
         ), #END tabPanel 1
         tabPanel("Explore Data", 
                  htmlOutput("topgene_linkOut"),
@@ -74,12 +82,8 @@ shinyUI(fluidPage(
                  br(), br(), br(),
                  dataTableOutput("geneExpTable")
       )#END tabset panel
-      
-      
     ) #END tabsetPanel under mainPanel
-  
     ) #END mainPanel
-
   ),# END SidebarLayout
   responsive=T,
   title="PCBC Cardiac Differentiation Study Data Explorer"

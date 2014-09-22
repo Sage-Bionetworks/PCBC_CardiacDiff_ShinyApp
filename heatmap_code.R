@@ -1,5 +1,6 @@
 #load the memoised version of pheatmap
-source("~/dev/apRs/expression_heatmap.R")
+library(devtools)
+source_url("https://raw.githubusercontent.com/apratap/apRs/master/expression_heatmap.R")
 
 #gene expression heatmap logic
 matrix_heatMap <- function(m, annotation = NA ,
@@ -7,18 +8,15 @@ matrix_heatMap <- function(m, annotation = NA ,
                            clustering_distance_cols = "correlation",
                            cor_method="spearman",
                            clustering_method = "average",
-                           scale = FALSE,
-                           ...){
+                           scale = FALSE,...){
   if(nrow(m) <= 2){
     return(memoised_pheatmap(m, cluster_rows=FALSE,
                              scale="none",
                              annotation = annotation,
                              drawRowD = FALSE,
-                             border_color = NA,
-                             ...))
+                             border_color = NA,...))
   }
   else{
-    
     #do the clustering and heatmap
     #scaling genes across experiments
     if(scale == "TRUE"){

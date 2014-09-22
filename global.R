@@ -21,7 +21,7 @@ cat('..Done\n\n')
 cat('Preparing the hg19 annotation df.....')
 k <- keys(org.Hs.eg.db,keytype="SYMBOL")
 hg19_gene_annot <- select(org.Hs.eg.db, keys=k, columns=c("GENENAME","ALIAS", "ENSEMBL", "ENSEMBLTRANS", "ENTREZID"), keytype="SYMBOL")
-saveRDS(hg19_gene_annot,"precomputed_hg19_gene_annot.RDS")
+#saveRDS(hg19_gene_annot,"precomputed_hg19_gene_annot.RDS")
 hg19_grpd <- hg19_gene_annot %>%
                 group_by(ENSEMBL) %>%
                 summarise(ALIAS = paste(unique(ALIAS),collapse=", "),
